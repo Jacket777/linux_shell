@@ -1,0 +1,14 @@
+#!/bin/bash
+var01=10.46
+var02=43.67
+var03=33.2
+var04=71
+
+var05=$(bc<<EOF
+scale=4
+a1=($var01*$var02)
+b1=($var03*$var04)
+a1+b1
+EOF
+)
+echo The final answer for this mess is $var05

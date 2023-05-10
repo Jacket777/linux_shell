@@ -1,0 +1,177 @@
+正则表达式定义了字符串的模式；
+正则表达式可以用来搜索、编辑或处理文本；
+正则表达式并不仅限于某一种语言，但是在每种语言中有细微的差别。
+
+正文
+
+使用正则表达式需要引入 java.util.regex 包，我们就从这里入手讲解：
+
+java.util.regex 包主要包括以下三个类：
+
+Pattern 类：
+pattern 对象是一个正则表达式的编译表示。Pattern 类没有公共构造方法。要创建一个 Pattern 对象，你必须首先调用其公共静态编译方法，它返回一个 Pattern 对象。该方法接受一个正则表达式作为它的第一个参数。
+
+Matcher 类：
+Matcher 对象是对输入字符串进行解释和匹配操作的引擎。与Pattern 类一样，Matcher 也没有公共构造方法。你需要调用 Pattern 对象的 matcher 方法来获得一个 Matcher 对象。
+
+
+PatternSyntaxException：
+PatternSyntaxException 是一个非强制异常类，它表示一个正则表达式模式中的语法错误。
+
+以下实例中演示了正则表达式的使用：
+
+/* import java.util.regex.*; */
+public void RegexExample() {
+	String input = "I am Jimmy from mp.csdn.net";
+	String regex = ".*csdn.*";
+		
+	// 方式1：String 的 matches 方法
+	boolean flag1 = input.matches(regex);
+		
+	// 方式2：Pattern 对象的 matches 方法
+	boolean flag2 = Pattern.matches(regex, input);
+		
+	// 方式3： Matcher 对象的 matches 方法
+	Pattern p = Pattern.compile(regex);
+	Matcher m = p.matcher(input);
+	boolean flag3 = m.matches();
+	
+	System.out.println("字符串中是否包含了'csdn'子字符串? " + flag1 );
+	System.out.println("字符串中是否包含了'csdn'子字符串? " + flag2 );
+	System.out.println("字符串中是否包含了'csdn'子字符串? " + flag3 );
+}
+输出结果：
+	字符串中是否包含了'csdn'子字符串? true
+	字符串中是否包含了'csdn'子字符串? true
+	字符串中是否包含了'csdn'子字符串? true
+1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+从上面的代码中，你会看到一个现象：
+
+3种方式的底层实现其实是一样的，只是封装的成度不一样，实际也确实如此；
+明白方式3，更有助于理解正则的执行过程；
+matches 和 lookingAt 方法
+
+matches() 和 lookingAt() 方法都用来尝试匹配一个输入序列模式。不同的是 matches() 要求整个序列都匹配，而 lookingAt() 不要求；
+lookingAt() 方法虽然不需要整句都匹配，但是需要从第一个字符开始匹配；
+这两个方法经常在输入字符串的开始使用。
+
+public void matchAndLookingExample() {
+	String REGEX = "foo";
+	String INPUT = "foooooooooo";
+	String INPUT2 = "ooooofoooooo";
+	
+	Pattern pattern = Pattern.compile(REGEX);
+	Matcher matcher = pattern.matcher(INPUT);
+	Matcher matcher2 = pattern.matcher(INPUT2);
+	
+	System.out.println("lookingAt(): "+matcher.lookingAt());
+	System.out.println("matches(): "+matcher.matches());
+	System.out.println("lookingAt(): "+matcher2.lookingAt());
+}
+输出结果：
+	lookingAt(): true	// 开头匹配
+	matches(): false	// 不是整个序列都匹配
+	lookingAt(): false	// 开头不匹配
+1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+正则表达式语法
+
+在其他语言中，\\ 表示：我想要在正则表达式中插入一个普通的（字面上的）反斜杠，请不要给它任何特殊的意义。
+
+在 Java 中，\\ 表示：我要插入一个正则表达式的反斜线，所以其后的字符具有特殊的意义。
+
+所以，在其他的语言中（如Perl），一个反斜杠 \ 就足以具有转义的作用，而在 Java 中正则表达式中则需要有两个反斜杠才能被解析为其他语言中的转义作用。也可以简单的理解在 Java 的正则表达式中，两个 \\ 代表其他语言中的一个 \，这也就是为什么表示一位数字的正则表达式是 \\d，而表示一个普通的反斜杠是 \\\\。
+
+字符	说明
+^	匹配输入字符串开始的位置。如果设置了 RegExp 对象的 Multiline 属性，^ 还会与"\n"或"\r"之后的位置匹配。
+$	匹配输入字符串结尾的位置。如果设置了 RegExp 对象的 Multiline 属性，$ 还会与"\n"或"\r"之前的位置匹配。
+*	零次或多次匹配前面的字符或子表达式。例如，zo* 匹配"z"和"zoo"。* 等效于 {0,}。
++	一次或多次匹配前面的字符或子表达式。例如，"zo+"与"zo"和"zoo"匹配，但与"z"不匹配。+ 等效于 {1,}。
+?	零次或一次匹配前面的字符或子表达式。例如，"do(es)?“匹配"do"或"does"中的"do”。? 等效于 {0,1}。
+{n}	n 是非负整数。正好匹配 n 次。例如，"o{2}"与"Bob"中的"o"不匹配，但与"food"中的两个"o"匹配。
+{n,}	n 是非负整数。至少匹配 n 次。例如，"o{2,}“不匹配"Bob"中的"o”，而匹配"foooood"中的所有 o。"o{1,}“等效于"o+”。"o{0,}“等效于"o*”。
+{n,m}	m 和 n 是非负整数，其中 n <= m。匹配至少 n 次，至多 m 次。例如，"o{1,3}"匹配"fooooood"中的头三个 o。‘o{0,1}’ 等效于 ‘o?’。注意：您不能将空格插入逗号和数字之间。
+x	y
+[xyz]	字符集。匹配包含的任一字符。例如，"[abc]“匹配"plain"中的"a”。
+[ ^xyz]	反向字符集。匹配未包含的任何字符。例如，"[^abc]“匹配"plain"中"p”，“l”，“i”，“n”。
+[a-z]	字符范围。匹配指定范围内的任何字符。例如，"[a-z]"匹配"a"到"z"范围内的任何小写字母。
+\d	数字字符匹配。等效于 [0-9]。
+\D	非数字字符匹配。等效于 [ ^0-9]。
+\w	匹配任何字类字符，包括下划线。与"[A-Za-z0-9_]"等效。
+\W	与任何非单词字符匹配。与"[ ^A-Za-z0-9_]"等效。
+常用的正则表达式
+
+说明	正则表达式
+一、校验数字的表达式 ~ ~ ~ ~ ~ ~ ~ ~ ~ ~	
+数字	^ [0-9]*$
+n位的数字	^\d{n}$
+至少n位的数字	^\d{n,}$
+m-n位的数字	^\d{m,n}$
+非零开头的最多带两位小数的数字	^([1-9][0-9]*)+(.[0-9]{1,2})?$
+带1-2位小数的正数或负数	^(-)?\d+(.\d{1,2})?$
+有1~3位小数的正实数	^ [0-9]+(.[0-9]{1,3})?$
+非负整数	^\d+$
+非正整数	^((-\d+)
+二、校验字符的表达式 ~ ~ ~ ~ ~ ~ ~ ~ ~ ~	
+汉字	^ [\u4e00-\u9fa5]{0,}$
+英文和数字	^ [A-Za-z0-9]+$
+长度为3-20的所有字符	^.{3,20}$
+由26个英文字母组成的字符串	^ [A-Za-z]+$
+由数字、26个英文字母或者下划线组成的字符串	^\w+$ 或 ^\w{3,20}$
+中文、英文、数字包括下划线	^ [\u4E00-\u9FA5A-Za-z0-9_]+$
+中文、英文、数字但不包括下划线等符号	^ [\u4E00-\u9FA5A-Za-z0-9]+$
+可以输入含有^%&’,;=?$"等字符	[^%&’,;=?$\x22]+
+禁止输入含有~的字符	[^~\x22]+
+三、特殊需求表达式 ~ ~ ~ ~ ~ ~ ~ ~ ~ ~	
+Email地址	^\w+([-+.]\w+)@\w+([-.]\w+).\w+([-.]\w+)*$
+域名	[a-zA-Z0-9][-a-zA-Z0-9]{0,62}(/.[a-zA-Z0-9][-a-zA-Z0-9]{0,62})+/.?
+InternetURL	[a-zA-z]+://[^\s]* 或 ^http://([\w-]+.)+[\w-]+(/[\w-./?%&=]*)?$
+手机号码	^(13[0-9]
+电话号码	^((\d{3,4}-)
+身份证号(15位、18位数字)	^\d{15}
+短身份证号码(数字、字母x结尾)	^([0-9]){7,18}(x
+帐号是否合法(字母开头，允许5-16字节，允许字母数字下划线)	^ [a-zA-Z][a-zA-Z0-9_]{4,15}$
+密码(以字母开头，长度在6~18之间，只能包含字母、数字和下划线)	^ [a-zA-Z]\w{5,17}$
+日期格式	^\d{4}-\d{1,2}-\d{1,2}
+中国邮政编码	[1-9]\d{5}(?!\d) (中国邮政编码为6位数字)
+腾讯QQ号	[1-9][0-9]{4,} (腾讯QQ号从10000开始)
+IP地址	\d+.\d+.\d+.\d+ (提取IP地址时有用)
+中文字符的正则表达式	[\u4e00-\u9fa5]

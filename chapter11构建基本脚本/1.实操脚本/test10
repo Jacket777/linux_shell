@@ -1,0 +1,7 @@
+#! /bin/bash
+# using the replace command
+var01=100
+var02=45
+var03=$(echo "scale=4;$var01/$var02"|bc)
+echo The answer for this is $var03
+

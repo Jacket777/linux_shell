@@ -1,0 +1,6 @@
+#!/bin/bash
+# testing lsof with file descriptors
+exec 3> test18file01
+exec 6> test18file02
+exec 7< testfile
+lsof -a -p $$ -d0,1,2,3,6,7

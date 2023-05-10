@@ -1,0 +1,5 @@
+#! /bin/bash
+# using bc in shell by command replace
+var01=$(echo "scale=4; 3.44 /5"| bc)
+echo The answer is $var01
+

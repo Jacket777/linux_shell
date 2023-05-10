@@ -1,0 +1,7 @@
+#! /bin/bash
+# use [] to calculate
+var01=100
+var02=50
+var03=45
+var04=$[$var01*($var02-$var03)]
+echo The final result is $var04

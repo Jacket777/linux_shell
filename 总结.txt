@@ -1,0 +1,83 @@
+1.小括号的作用
+A.命令分组（command grouping）
+它会产生子shell,
+实例1：(pwd; ls; cd /etc;pwd;echo $BASH_SUBSHELL)
+最后输出为0
+
+
+B.数组变量设置
+mytest=(one two three four five)
+
+
+C.与$符号配合使用进行命令替换,如下
+a=$(date)
+
+
+
+
+2.花扩号的作用{}
+命令分组是将命令放入花括号中， 并在命令列表尾部加上分号（;）。语法为{ command; }。
+A.命令分组，但不会产生子shell
+实例1：
+{ pwd; ls; cd /etc;pwd;echo $BASH_SUBSHELL; }
+大括号前后必须有空格，且最后的命令必须加分号
+最后的输出为0
+
+B数组变量取值
+mytest=(one two three four five)
+echo ${mytest[2]} //单个值
+echo ${mytest[*]} //全部数组
+
+
+C.协程命名
+coproc MYJOB { sleep 10; }
+大括号前后必须有空格，且最后的命令必须加分号
+
+D.引用变量
+var1=100
+var2=${var1}
+
+
+3.中括号的作用[]
+A.进行变量的运算
+#!/bin/bash
+#testing the exit status
+var01=10
+var02=30
+var03=$[$var01+$var02]
+echo The answer is $var03
+exit 5
+注意：最外面要用$引用结果
+
+B.条件测试
+if [ condition ] 
+then 
+commands
+fi 
+方括号定义了测试条件。注意，第一个方括号之后和第二个方括号之前必须加上一个空格，
+否则就会报错。
+
+
+
+
+4.命令替换的两种方式
+1.使用反引号:a=`date`
+2.使用小括号与$符号, 如b=$(date)
+
+
+
+3.&符号作用
+A.指定命令后台运行, 必须在命令后直接接该符号，
+sleep 30&
+B. && 作为复合条件测试基础
+
+
+
+4.双括号的作用
+A.在if-then 语句中使用
+双括号命令允许你在比较过程中使用高级数学表达式
+
+5.双中括号
+双方括号命令提供了针对字符串比较的高级特性。双方括号命令的格式如下：
+[[ expression]] 
+

@@ -1,0 +1,6 @@
+#! /bin/bash
+# An example of using the expr command
+var01=10
+var02=20
+var03=$(expr $var02 / $var01)
+echo "The reuslt is $var03"

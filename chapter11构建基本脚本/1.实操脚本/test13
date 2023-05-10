@@ -1,0 +1,7 @@
+#!/bin/bash
+#testing the exit status
+var01=10
+var02=30
+var03=$[$var01+$var02]
+echo The answer is $var03
+exit 5

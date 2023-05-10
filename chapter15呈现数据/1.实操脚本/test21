@@ -1,0 +1,12 @@
+#!/bin/bash
+#using a temporary directory
+tempdir=$(mktemp -d dir.XXXXXX)
+cd $tempdir
+tempfile01=$(mktemp temp.XXXXXX)
+tempfile02=$(mktemp temp.XXXXXX)
+exec 7>$tempfile01
+exec 8>$tempfile02
+echo "Sending data to directory $tempdir"
+echo "This is a test line of data for $tempfile01" >&7
+echo "This is a test line of data for $tempfile02" >&8
+
